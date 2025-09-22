@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CycleRent - Premium Bike Rentals</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-bicycle"></i>
+                <span>CycleRent</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#bikes" class="nav-link">Bikes</a></li>
+                <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="admin.html" class="nav-link" style="color: #666; font-size: 0.9rem;"><i class="fas fa-cog"></i> Admin</a></li>
+                <li><a href="#book" class="nav-link btn-primary">Book Now</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Explore the City on Two Wheels</h1>
+            <p>Premium bike rentals for every adventure. From city cruising to mountain trails, we have the perfect bike for you.</p>
+            <div class="hero-buttons">
+                <a href="#bikes" class="btn btn-primary">Browse Bikes</a>
+                <a href="#pricing" class="btn btn-secondary">View Pricing</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="bike-showcase">
+                <i class="fas fa-bicycle"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Bikes Section -->
+    <section id="bikes" class="featured-bikes">
+        <div class="container">
+            <h2>Our Bike Collection</h2>
+            <p class="section-subtitle">Choose from our premium selection of bikes</p>
+            
+            <div class="bike-filters">
+                <button class="filter-btn active" data-filter="all">All Bikes</button>
+                <button class="filter-btn" data-filter="city">City Bikes</button>
+                <button class="filter-btn" data-filter="mountain">Mountain Bikes</button>
+                <button class="filter-btn" data-filter="electric">E-Bikes</button>
+                <button class="filter-btn" data-filter="road">Road Bikes</button>
+            </div>
+
+            <div class="bikes-grid">
+                <div class="bike-card" data-category="city">
+                    <div class="bike-image">
+                        <i class="fas fa-bicycle"></i>
+                    </div>
+                    <div class="bike-info">
+                        <h3>City Cruiser</h3>
+                        <p>Perfect for city exploration and casual rides</p>
+                        <div class="bike-features">
+                            <span><i class="fas fa-check"></i> Comfortable seat</span>
+                            <span><i class="fas fa-check"></i> Basket included</span>
+                            <span><i class="fas fa-check"></i> Light weight</span>
+                        </div>
+                        <div class="bike-pricing">
+                            <span class="price">$15/day</span>
+                            <button class="btn btn-primary">Rent Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bike-card" data-category="mountain">
+                    <div class="bike-image">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <div class="bike-info">
+                        <h3>Mountain Explorer</h3>
+                        <p>Built for trails and off-road adventures</p>
+                        <div class="bike-features">
+                            <span><i class="fas fa-check"></i> Shock absorption</span>
+                            <span><i class="fas fa-check"></i> All-terrain tires</span>
+                            <span><i class="fas fa-check"></i> 21-speed gear</span>
+                        </div>
+                        <div class="bike-pricing">
+                            <span class="price">$25/day</span>
+                            <button class="btn btn-primary">Rent Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bike-card" data-category="electric">
+                    <div class="bike-image">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="bike-info">
+                        <h3>E-Bike Pro</h3>
+                        <p>Electric assistance for effortless riding</p>
+                        <div class="bike-features">
+                            <span><i class="fas fa-check"></i> 50km range</span>
+                            <span><i class="fas fa-check"></i> Quick charging</span>
+                            <span><i class="fas fa-check"></i> Smart display</span>
+                        </div>
+                        <div class="bike-pricing">
+                            <span class="price">$35/day</span>
+                            <button class="btn btn-primary">Rent Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bike-card" data-category="road">
+                    <div class="bike-image">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <div class="bike-info">
+                        <h3>Road Racer</h3>
+                        <p>Lightweight and fast for road cycling</p>
+                        <div class="bike-features">
+                            <span><i class="fas fa-check"></i> Carbon frame</span>
+                            <span><i class="fas fa-check"></i> Drop handlebars</span>
+                            <span><i class="fas fa-check"></i> Speed focused</span>
+                        </div>
+                        <div class="bike-pricing">
+                            <span class="price">$30/day</span>
+                            <button class="btn btn-primary">Rent Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2>Simple, Transparent Pricing</h2>
+            <p class="section-subtitle">Choose the rental period that works for you</p>
+            
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3>Hourly</h3>
+                    <div class="price-amount">
+                        <span class="currency">$</span>
+                        <span class="amount">5</span>
+                        <span class="period">/hour</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Perfect for short trips</li>
+                        <li><i class="fas fa-check"></i> Helmet included</li>
+                        <li><i class="fas fa-check"></i> Lock provided</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Daily</h3>
+                    <div class="price-amount">
+                        <span class="currency">$</span>
+                        <span class="amount">25</span>
+                        <span class="period">/day</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Full day adventure</li>
+                        <li><i class="fas fa-check"></i> All safety gear</li>
+                        <li><i class="fas fa-check"></i> Route recommendations</li>
+                        <li><i class="fas fa-check"></i> 24/7 support</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Weekly</h3>
+                    <div class="price-amount">
+                        <span class="currency">$</span>
+                        <span class="amount">150</span>
+                        <span class="period">/week</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Best value option</li>
+                        <li><i class="fas fa-check"></i> Free maintenance</li>
+                        <li><i class="fas fa-check"></i> Pickup & delivery</li>
+                        <li><i class="fas fa-check"></i> Insurance included</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="book" class="booking">
+        <div class="container">
+            <h2>Book Your Bike</h2>
+            <p class="section-subtitle">Reserve your perfect bike for your next adventure</p>
+            
+            <div class="booking-form-container">
+                <form class="booking-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bike-type">Bike Type</label>
+                            <select id="bike-type" required>
+                                <option value="">Select a bike</option>
+                                <option value="city">City Cruiser - $15/day</option>
+                                <option value="mountain">Mountain Explorer - $25/day</option>
+                                <option value="electric">E-Bike Pro - $35/day</option>
+                                <option value="road">Road Racer - $30/day</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rental-period">Rental Period</label>
+                            <select id="rental-period" required>
+                                <option value="">Select period</option>
+                                <option value="hourly">Hourly</option>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-date">Start Date</label>
+                            <input type="date" id="start-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">End Date</label>
+                            <input type="date" id="end-date" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customer-name">Full Name</label>
+                            <input type="text" id="customer-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-email">Email</label>
+                            <input type="email" id="customer-email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customer-phone">Phone Number</label>
+                        <input type="tel" id="customer-phone" required>
+                    </div>
+                    
+                    <div class="booking-summary">
+                        <div class="summary-item">
+                            <span>Selected Bike:</span>
+                            <span id="selected-bike">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Rental Period:</span>
+                            <span id="selected-period">-</span>
+                        </div>
+                        <div class="summary-item total">
+                            <span>Total Cost:</span>
+                            <span id="total-cost">$0</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-large">Complete Booking</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Visit Our Store</h2>
+            <p class="section-subtitle">Come see our bikes in person or get in touch</p>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>123 Bike Street<br>San Francisco, CA 94102</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>(555) 123-BIKE<br>Call us anytime</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@cyclerent.com<br>24/7 support</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Hours</h4>
+                            <p>Mon-Sun: 7AM - 8PM<br>Holiday hours may vary</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-map">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map"></i>
+                        <p>Interactive Map</p>
+                        <small>123 Bike Street, San Francisco</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-bicycle"></i>
+                        <span>CycleRent</span>
+                    </div>
+                    <p>Your trusted partner for bike rentals. Exploring the city has never been easier.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#bikes">Bikes</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Bike Rentals</a></li>
+                        <li><a href="#">Guided Tours</a></li>
+                        <li><a href="#">Maintenance</a></li>
+                        <li><a href="#">Insurance</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Safety Guidelines</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 CycleRent. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
