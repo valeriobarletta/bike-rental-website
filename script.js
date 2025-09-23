@@ -160,22 +160,155 @@ function calculateTotal() {
     totalCostSpan.textContent = `$${totalCost.toFixed(0)}`;
 }
 
-// Payment Links Configuration
-// Note: Replace the placeholder links in index.html with your actual Stripe Payment Links
+// Dynamic Stripe Checkout Configuration
+const STRIPE_PUBLISHABLE_KEY = 'pk_live_51SAIVqHR43SSGlJl4bshr7LVIybJYHnatjICVaku6xtO6mlFpsFdREq4VYSp6qn9QgTgITcXOVTTUxR9Ktk2CMdy00EV7R5wem';
+let stripe;
+
+// Initialize Stripe
+document.addEventListener('DOMContentLoaded', () => {
+    if (STRIPE_PUBLISHABLE_KEY.includes('pk_live_') || STRIPE_PUBLISHABLE_KEY.includes('pk_test_')) {
+        stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+    }
+    
+    // Show info message about dynamic pricing
+    setTimeout(() => {
+        showDynamicPricingMessage();
+    }, 2000);
+    
+    // Setup admin access easter egg
+    setupAdminAccess();
+});
+
+// Process booking with dynamic pricing
+async function processBooking(bikeType, dailyRate) {
+    // Validate booking form first
+    const customerName = document.getElementById('customer-name').value;
+    const customerEmail = document.getElementById('customer-email').value;
+    const customerPhone = document.getElementById('customer-phone').value;
+    const rentalPeriod = document.getElementById('rental-period').value;
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
+    
+    // Basic validation
+    if (!customerName || !customerEmail || !customerPhone || !rentalPeriod || !startDate || !endDate) {
+        alert('Please fill in all booking details first!');
+        return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(customerEmail)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+    
+    // Date validation
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (start < today) {
+        alert('Start date cannot be in the past.');
+        return;
+    }
+    
+    if (end < start) {
+        alert('End date must be after start date.');
+        return;
+    }
+    
+    // Calculate total amount based on form data
+    const totalAmount = calculateDynamicTotal(dailyRate, rentalPeriod, start, end);
+    const bikeNames = {
+        'city': 'City Cruiser',
+        'mountain': 'Mountain Explorer',
+        'electric': 'E-Bike Pro',
+        'road': 'Road Racer'
+    };
+    
+    // Create dynamic Stripe checkout
+    if (stripe) {
+        try {
+            const { error } = await stripe.redirectToCheckout({
+                mode: 'payment',
+                lineItems: [{
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: `${bikeNames[bikeType]} Rental`,
+                            description: `${startDate} to ${endDate} (${rentalPeriod})`,
+                            images: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500'],
+                        },
+                        unit_amount: totalAmount * 100, // Convert to cents
+                    },
+                    quantity: 1,
+                }],
+                customer_email: customerEmail,
+                metadata: {
+                    customerName: customerName,
+                    customerPhone: customerPhone,
+                    bikeType: bikeType,
+                    rentalPeriod: rentalPeriod,
+                    startDate: startDate,
+                    endDate: endDate,
+                    totalAmount: totalAmount
+                },
+                success_url: window.location.origin + '/success.html?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url: window.location.origin + '/index.html?cancelled=true',
+            });
+
+            if (error) {
+                throw new Error(error.message);
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            alert('Payment setup failed. Please try again or contact support.');
+        }
+    } else {
+        // Fallback: show calculated total and prompt for manual payment
+        alert(`Booking calculated: $${totalAmount}\n\nStripe not configured. Contact us to complete payment.\n\nCustomer: ${customerName}\nEmail: ${customerEmail}\nBike: ${bikeNames[bikeType]}\nDates: ${startDate} to ${endDate}`);
+    }
+}
+
+// Calculate dynamic total based on rental period and dates
+function calculateDynamicTotal(dailyRate, rentalPeriod, startDate, endDate) {
+    const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+    
+    let totalCost = 0;
+    
+    switch (rentalPeriod) {
+        case 'hourly':
+            // Assume 8 hours average per day for hourly rentals
+            totalCost = daysDiff * 8 * 5; // $5 per hour
+            break;
+        case 'daily':
+            totalCost = daysDiff * dailyRate;
+            break;
+        case 'weekly':
+            const weeks = Math.ceil(daysDiff / 7);
+            totalCost = weeks * dailyRate * 6; // 6 days price for 7 days (1 day free)
+            break;
+        default:
+            totalCost = daysDiff * dailyRate;
+    }
+    
+    return totalCost;
+}
 
 // Note: Form submission is no longer needed since we're using Stripe Payment Links
 // Customers will click the payment link buttons instead of submitting the form
 
-// Show message about using payment links
-function showPaymentLinksMessage() {
+// Show message about dynamic pricing
+function showDynamicPricingMessage() {
     const message = document.createElement('div');
     message.className = 'payment-message success show';
     message.innerHTML = `
         <div style="text-align: center;">
-            <i class="fas fa-info-circle" style="font-size: 2rem; color: #667eea; margin-bottom: 1rem;"></i>
-            <h3>Complete Your Booking</h3>
-            <p>Please select your bike type below and click the payment button to complete your booking securely through Stripe.</p>
-            <p><small>You'll be redirected to Stripe's secure checkout page to complete your payment.</small></p>
+            <i class="fas fa-calculator" style="font-size: 2rem; color: #667eea; margin-bottom: 1rem;"></i>
+            <h3>Smart Pricing System</h3>
+            <p>Fill out your booking details first, then click "Book & Pay" for any bike. The price will be calculated automatically based on your rental period and dates!</p>
+            <p><small>Hourly: $5/hour • Daily: Per day rate • Weekly: 6 days for 7 (1 day free!)</small></p>
         </div>
     `;
     
@@ -186,10 +319,10 @@ function showPaymentLinksMessage() {
     }
     formContainer.insertBefore(message, formContainer.firstChild);
     
-    // Remove message after 8 seconds
+    // Remove message after 10 seconds
     setTimeout(() => {
         message.remove();
-    }, 8000);
+    }, 10000);
 }
 
 // Rent Now buttons functionality

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -284,9 +285,9 @@
                                         <span class="price">$15/day</span>
                                     </div>
                                 </div>
-                                <a href="https://buy.stripe.com/6oU8wPcFha81bfc0OZ6kg00" class="btn btn-primary payment-btn" target="_blank">
-                                    <i class="fas fa-external-link-alt"></i> Pay $15/day
-                                </a>
+                                <button class="btn btn-primary payment-btn" onclick="processBooking('city', 15)" type="button">
+                                    <i class="fas fa-credit-card"></i> Book & Pay
+                                </button>
                             </div>
                             
                             <div class="payment-link-item">
@@ -298,9 +299,9 @@
                                         <span class="price">$25/day</span>
                                     </div>
                                 </div>
-                                <a href="https://buy.stripe.com/test_your_mountain_bike_link" class="btn btn-primary payment-btn" target="_blank">
-                                    <i class="fas fa-external-link-alt"></i> Pay $25/day
-                                </a>
+                                <button class="btn btn-primary payment-btn" onclick="processBooking('mountain', 25)" type="button">
+                                    <i class="fas fa-credit-card"></i> Book & Pay
+                                </button>
                             </div>
                             
                             <div class="payment-link-item">
@@ -312,9 +313,9 @@
                                         <span class="price">$35/day</span>
                                     </div>
                                 </div>
-                                <a href="https://buy.stripe.com/test_your_ebike_link" class="btn btn-primary payment-btn" target="_blank">
-                                    <i class="fas fa-external-link-alt"></i> Pay $35/day
-                                </a>
+                                <button class="btn btn-primary payment-btn" onclick="processBooking('electric', 35)" type="button">
+                                    <i class="fas fa-credit-card"></i> Book & Pay
+                                </button>
                             </div>
                             
                             <div class="payment-link-item">
@@ -326,9 +327,9 @@
                                         <span class="price">$30/day</span>
                                     </div>
                                 </div>
-                                <a href="https://buy.stripe.com/test_your_road_bike_link" class="btn btn-primary payment-btn" target="_blank">
-                                    <i class="fas fa-external-link-alt"></i> Pay $30/day
-                                </a>
+                                <button class="btn btn-primary payment-btn" onclick="processBooking('road', 30)" type="button">
+                                    <i class="fas fa-credit-card"></i> Book & Pay
+                                </button>
                             </div>
                         </div>
                         
