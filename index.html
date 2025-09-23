@@ -21,7 +21,6 @@
                 <li><a href="#bikes" class="nav-link">Bikes</a></li>
                 <li><a href="#pricing" class="nav-link">Pricing</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li><a href="admin.html" class="nav-link" style="color: #666; font-size: 0.9rem;"><i class="fas fa-cog"></i> Admin</a></li>
                 <li><a href="#book" class="nav-link btn-primary">Book Now</a></li>
             </ul>
             <div class="hamburger">
@@ -270,7 +269,90 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary btn-large">Complete Booking</button>
+                    <!-- Payment Section -->
+                    <div class="payment-section">
+                        <h3><i class="fas fa-credit-card"></i> Complete Your Booking</h3>
+                        <p class="payment-subtitle">Choose your bike and pay securely with Stripe</p>
+                        
+                        <div class="payment-links">
+                            <div class="payment-link-item">
+                                <div class="bike-option">
+                                    <i class="fas fa-bicycle"></i>
+                                    <div class="bike-details">
+                                        <h4>City Cruiser</h4>
+                                        <p>Perfect for city exploration and casual rides</p>
+                                        <span class="price">$15/day</span>
+                                    </div>
+                                </div>
+                                <a href="https://buy.stripe.com/test_your_city_bike_link" class="btn btn-primary payment-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Pay $15/day
+                                </a>
+                            </div>
+                            
+                            <div class="payment-link-item">
+                                <div class="bike-option">
+                                    <i class="fas fa-mountain"></i>
+                                    <div class="bike-details">
+                                        <h4>Mountain Explorer</h4>
+                                        <p>Built for trails and off-road adventures</p>
+                                        <span class="price">$25/day</span>
+                                    </div>
+                                </div>
+                                <a href="https://buy.stripe.com/test_your_mountain_bike_link" class="btn btn-primary payment-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Pay $25/day
+                                </a>
+                            </div>
+                            
+                            <div class="payment-link-item">
+                                <div class="bike-option">
+                                    <i class="fas fa-bolt"></i>
+                                    <div class="bike-details">
+                                        <h4>E-Bike Pro</h4>
+                                        <p>Electric assistance for effortless riding</p>
+                                        <span class="price">$35/day</span>
+                                    </div>
+                                </div>
+                                <a href="https://buy.stripe.com/test_your_ebike_link" class="btn btn-primary payment-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Pay $35/day
+                                </a>
+                            </div>
+                            
+                            <div class="payment-link-item">
+                                <div class="bike-option">
+                                    <i class="fas fa-road"></i>
+                                    <div class="bike-details">
+                                        <h4>Road Racer</h4>
+                                        <p>Lightweight and fast for road cycling</p>
+                                        <span class="price">$30/day</span>
+                                    </div>
+                                </div>
+                                <a href="https://buy.stripe.com/test_your_road_bike_link" class="btn btn-primary payment-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Pay $30/day
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-info">
+                            <div class="security-info">
+                                <i class="fas fa-lock"></i>
+                                <small>Payments are processed securely by Stripe. You'll be redirected to complete your purchase.</small>
+                            </div>
+                            
+                            <div class="card-logos">
+                                <i class="fab fa-cc-visa"></i>
+                                <i class="fab fa-cc-mastercard"></i>
+                                <i class="fab fa-cc-amex"></i>
+                                <i class="fab fa-cc-discover"></i>
+                                <i class="fab fa-paypal"></i>
+                                <i class="fab fa-apple-pay"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="setup-notice">
+                            <i class="fas fa-info-circle"></i>
+                            <p><strong>Setup Required:</strong> Replace the payment links above with your actual Stripe Payment Links from your dashboard. See <code>REAL-PAYMENTS-SOLUTION.md</code> for instructions.</p>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -375,6 +457,12 @@
             
             <div class="footer-bottom">
                 <p>&copy; 2025 CycleRent. All rights reserved.</p>
+                <!-- Hidden admin link - double click the logo to reveal -->
+                <div class="admin-access" style="opacity: 0; transition: opacity 0.3s ease;">
+                    <a href="admin.html" style="color: #666; text-decoration: none; font-size: 0.8rem;">
+                        <i class="fas fa-cog"></i> Admin Portal
+                    </a>
+                </div>
             </div>
         </div>
     </footer>

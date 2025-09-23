@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - CycleRent</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-bicycle"></i>
+                <span>CycleRent</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="admin.html" class="nav-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Success Section -->
+    <section class="success-section">
+        <div class="container">
+            <div class="success-content">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h1>Payment Successful! 🎉</h1>
+                <p class="success-subtitle">Your bike rental has been confirmed</p>
+                
+                <div class="booking-details" id="booking-details">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading your booking details...</p>
+                    </div>
+                </div>
+                
+                <div class="success-actions">
+                    <a href="index.html" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                    <a href="admin.html" class="btn btn-secondary">
+                        <i class="fas fa-list"></i> View All Bookings
+                    </a>
+                </div>
+                
+                <div class="next-steps">
+                    <h3>What's Next?</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> Check your email for booking confirmation</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Visit our store at 123 Bike Street, San Francisco</li>
+                        <li><i class="fas fa-id-card"></i> Bring a valid ID for bike pickup</li>
+                        <li><i class="fas fa-phone"></i> Call (555) 123-BIKE if you have questions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .success-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 20px 50px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .success-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .success-icon {
+            font-size: 5rem;
+            color: #28a745;
+            margin-bottom: 2rem;
+        }
+        
+        .success-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .success-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+        
+        .booking-details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .booking-info {
+            text-align: left;
+        }
+        
+        .booking-info h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .success-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .next-steps {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .next-steps h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .next-steps ul {
+            list-style: none;
+            text-align: left;
+        }
+        
+        .next-steps li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .next-steps i {
+            color: #28a745;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+        
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+        
+        .loading i {
+            font-size: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .success-content h1 {
+                font-size: 2rem;
+            }
+            
+            .success-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+        }
+    </style>
+
+    <script>
+        // Get session ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+        
+        if (sessionId) {
+            // Initialize Stripe with your publishable key
+            const stripe = Stripe('pk_live_51SAIVqHR43SSGlJl4bshr7LVIybJYHnatjICVaku6xtO6mlFpsFdREq4VYSp6qn9QgTgITcXOVTTUxR9Ktk2CMdy00EV7R5wem');
+            
+            // Retrieve the session (note: this only works with limited session data)
+            displaySuccessMessage(sessionId);
+        } else {
+            // No session ID - redirect to home
+            window.location.href = 'index.html';
+        }
+        
+        function displaySuccessMessage(sessionId) {
+            const bookingDetails = document.getElementById('booking-details');
+            
+            // Since we can't retrieve full session details without a backend,
+            // we'll show a generic success message with the session ID
+            bookingDetails.innerHTML = `
+                <div class="booking-info">
+                    <h3>Booking Confirmed</h3>
+                    <div class="detail-row">
+                        <span>Payment ID:</span>
+                        <span>${sessionId.substring(0, 20)}...</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Status:</span>
+                        <span style="color: #28a745;">✓ Paid</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Date:</span>
+                        <span>${new Date().toLocaleDateString()}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Confirmation:</span>
+                        <span>Check your email for full details</span>
+                    </div>
+                </div>
+            `;
+            
+            // Save a basic booking record to localStorage
+            const basicBooking = {
+                id: Date.now(),
+                paymentId: sessionId,
+                date: new Date().toISOString(),
+                status: 'confirmed',
+                paymentStatus: 'paid',
+                source: 'stripe_checkout'
+            };
+            
+            let bookings = JSON.parse(localStorage.getItem('bikeRentalBookings')) || [];
+            bookings.push(basicBooking);
+            localStorage.setItem('bikeRentalBookings', JSON.stringify(bookings));
+        }
+    </script>
+</body>
+</html>

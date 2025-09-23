@@ -136,6 +136,40 @@
             color: #721c24;
         }
         
+        .payment-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .payment-badge {
+            padding: 3px 6px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .payment-paid {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .payment-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .payment-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .payment-info small {
+            color: #666;
+            font-size: 0.75rem;
+        }
+        
         .action-buttons {
             display: flex;
             gap: 0.5rem;
@@ -199,6 +233,93 @@
             z-index: 1000;
         }
         
+        /* Login Styles */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .login-form {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-header i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .login-header h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-header p {
+            color: #666;
+            margin: 0;
+        }
+        
+        .login-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .login-error i {
+            margin-right: 0.5rem;
+        }
+        
+        .login-info {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        
+        .login-info code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        
+        .admin-title h1 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-title p {
+            margin: 0;
+            color: #666;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
         @media (max-width: 768px) {
             .orders-table {
                 font-size: 0.9rem;
@@ -233,10 +354,44 @@
         <i class="fas fa-arrow-left"></i> Back to Site
     </a>
 
-    <div class="admin-container">
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-form">
+            <div class="login-header">
+                <i class="fas fa-lock"></i>
+                <h2>Admin Access</h2>
+                <p>Enter the admin password to continue</p>
+            </div>
+            <form id="admin-login">
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" placeholder="Enter admin password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <div id="login-error" class="login-error hidden">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Incorrect password. Please try again.
+                </div>
+            </form>
+            <div class="login-info">
+                <p><small><strong>Default password:</strong> <code>admin123</code></small></p>
+                <p><small>Change this in the JavaScript for security</small></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel (Hidden by default) -->
+    <div id="admin-panel" class="admin-container hidden">
         <div class="admin-header">
-            <h1><i class="fas fa-bicycle"></i> CycleRent Admin Panel</h1>
-            <p>Manage your bike rental bookings</p>
+            <div class="admin-title">
+                <h1><i class="fas fa-bicycle"></i> CycleRent Admin Panel</h1>
+                <p>Manage your bike rental bookings</p>
+            </div>
+            <button id="logout-btn" class="btn btn-secondary">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
         </div>
 
         <div class="admin-stats">
@@ -299,14 +454,86 @@
     </div>
 
     <script>
+        // Admin Configuration
+        const ADMIN_PASSWORD = 'admin123'; // Change this for security!
+        
         let allBookings = [];
         let filteredBookings = [];
+        let isLoggedIn = false;
 
-        // Load bookings when page loads
+        // Check login status when page loads
         document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            setupLoginListeners();
+        });
+        
+        function checkLoginStatus() {
+            // Check if admin is already logged in (session storage)
+            const adminSession = sessionStorage.getItem('cyclerent_admin_logged_in');
+            if (adminSession === 'true') {
+                showAdminPanel();
+            } else {
+                showLoginScreen();
+            }
+        }
+        
+        function setupLoginListeners() {
+            // Login form submission
+            document.getElementById('admin-login').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const password = document.getElementById('admin-password').value;
+                const errorDiv = document.getElementById('login-error');
+                
+                if (password === ADMIN_PASSWORD) {
+                    // Correct password
+                    sessionStorage.setItem('cyclerent_admin_logged_in', 'true');
+                    showAdminPanel();
+                    errorDiv.classList.add('hidden');
+                } else {
+                    // Wrong password
+                    errorDiv.classList.remove('hidden');
+                    document.getElementById('admin-password').value = '';
+                    document.getElementById('admin-password').focus();
+                }
+            });
+            
+            // Logout button
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                logout();
+            });
+        }
+        
+        function showLoginScreen() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('admin-panel').classList.add('hidden');
+            document.getElementById('admin-password').focus();
+        }
+        
+        function showAdminPanel() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('admin-panel').classList.remove('hidden');
+            isLoggedIn = true;
+            
+            // Load admin panel data
             loadBookings();
             setupEventListeners();
-        });
+        }
+        
+        function logout() {
+            sessionStorage.removeItem('cyclerent_admin_logged_in');
+            isLoggedIn = false;
+            showLoginScreen();
+        }
+
+        // Load bookings when admin panel is shown
+        function loadBookings() {
+            if (!isLoggedIn) return;
+            
+            allBookings = JSON.parse(localStorage.getItem('bikeRentalBookings')) || [];
+            filteredBookings = [...allBookings];
+            updateStats();
+            displayBookings();
+        }
 
         function loadBookings() {
             allBookings = JSON.parse(localStorage.getItem('bikeRentalBookings')) || [];
@@ -396,6 +623,7 @@
                             <th>Period</th>
                             <th>Dates</th>
                             <th>Total</th>
+                            <th>Payment</th>
                             <th>Status</th>
                             <th>Booked On</th>
                             <th>Actions</th>
@@ -417,6 +645,12 @@
                                     <small>to ${booking.endDate}</small>
                                 </td>
                                 <td><strong>${booking.totalCost}</strong></td>
+                                <td>
+                                    <div class="payment-info">
+                                        ${booking.paymentStatus ? `<span class="payment-badge payment-${booking.paymentStatus}">${booking.paymentStatus}</span>` : '<span class="payment-badge payment-pending">pending</span>'}
+                                        ${booking.paymentDetails ? `<small>${booking.paymentDetails.method} •••${booking.paymentDetails.last4 || 'paid'}</small>` : ''}
+                                    </div>
+                                </td>
                                 <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
                                 <td>${new Date(booking.bookingDate).toLocaleDateString()}</td>
                                 <td>
