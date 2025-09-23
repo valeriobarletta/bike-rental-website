@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Process booking with dynamic pricing
 async function processBooking(bikeType, dailyRate) {
-    // Validate booking form first
+    // Get form values
     const customerName = document.getElementById('customer-name').value;
     const customerEmail = document.getElementById('customer-email').value;
     const customerPhone = document.getElementById('customer-phone').value;
@@ -218,8 +218,9 @@ async function processBooking(bikeType, dailyRate) {
         return;
     }
     
-    // Calculate total amount based on form data
+    // Calculate total amount
     const totalAmount = calculateDynamicTotal(dailyRate, rentalPeriod, start, end);
+    
     const bikeNames = {
         'city': 'City Cruiser',
         'mountain': 'Mountain Explorer',
@@ -227,7 +228,7 @@ async function processBooking(bikeType, dailyRate) {
         'road': 'Road Racer'
     };
     
-    // Create dynamic Stripe checkout
+    // Create Stripe checkout session
     if (stripe) {
         try {
             const { error } = await stripe.redirectToCheckout({
@@ -238,24 +239,14 @@ async function processBooking(bikeType, dailyRate) {
                         product_data: {
                             name: `${bikeNames[bikeType]} Rental`,
                             description: `${startDate} to ${endDate} (${rentalPeriod})`,
-                            images: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500'],
                         },
-                        unit_amount: totalAmount * 100, // Convert to cents
+                        unit_amount: Math.round(totalAmount * 100), // Convert to cents
                     },
                     quantity: 1,
                 }],
                 customer_email: customerEmail,
-                metadata: {
-                    customerName: customerName,
-                    customerPhone: customerPhone,
-                    bikeType: bikeType,
-                    rentalPeriod: rentalPeriod,
-                    startDate: startDate,
-                    endDate: endDate,
-                    totalAmount: totalAmount
-                },
-                success_url: window.location.origin + '/success.html?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url: window.location.origin + '/index.html?cancelled=true',
+                success_url: window.location.origin + '/success.html',
+                cancel_url: window.location.origin + '/index.html',
             });
 
             if (error) {
@@ -263,24 +254,26 @@ async function processBooking(bikeType, dailyRate) {
             }
         } catch (error) {
             console.error('Checkout error:', error);
-            alert('Payment setup failed. Please try again or contact support.');
+            alert('Payment setup failed. Please try again.');
         }
     } else {
-        // Fallback: show calculated total and prompt for manual payment
-        alert(`Booking calculated: $${totalAmount}\n\nStripe not configured. Contact us to complete payment.\n\nCustomer: ${customerName}\nEmail: ${customerEmail}\nBike: ${bikeNames[bikeType]}\nDates: ${startDate} to ${endDate}`);
+        alert(`Please contact us to complete your booking:\n\nTotal: $${totalAmount}\nBike: ${bikeNames[bikeType]}\nDates: ${startDate} to ${endDate}`);
     }
 }
 
 // Calculate dynamic total based on rental period and dates
 function calculateDynamicTotal(dailyRate, rentalPeriod, startDate, endDate) {
-    const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+    const start = typeof startDate === 'string' ? new Date(startDate) : startDate;
+    const end = typeof endDate === 'string' ? new Date(endDate) : endDate;
+    
+    const daysDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
     
     let totalCost = 0;
     
     switch (rentalPeriod) {
         case 'hourly':
-            // Assume 8 hours average per day for hourly rentals
-            totalCost = daysDiff * 8 * 5; // $5 per hour
+            const hourlyRate = dailyRate / 8;
+            totalCost = daysDiff * 8 * hourlyRate;
             break;
         case 'daily':
             totalCost = daysDiff * dailyRate;
@@ -293,11 +286,9 @@ function calculateDynamicTotal(dailyRate, rentalPeriod, startDate, endDate) {
             totalCost = daysDiff * dailyRate;
     }
     
-    return totalCost;
+    return Math.round(totalCost * 100) / 100; // Round to 2 decimal places
 }
 
-// Note: Form submission is no longer needed since we're using Stripe Payment Links
-// Customers will click the payment link buttons instead of submitting the form
 
 // Show message about dynamic pricing
 function showDynamicPricingMessage() {

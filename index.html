@@ -275,6 +275,25 @@
                         <h3><i class="fas fa-credit-card"></i> Complete Your Booking</h3>
                         <p class="payment-subtitle">Choose your bike and pay securely with Stripe</p>
                         
+                        <!-- TEST BUTTON FOR DEBUGGING -->
+                        <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; margin: 10px 0; border-radius: 5px;">
+                            <h4>🧪 Debug Test</h4>
+                            <p>Click to test calculation with sample data:</p>
+                            <button onclick="testCalculation()" style="background: #e74c3c; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                                🧪 Test Calculation
+                            </button>
+                            <button onclick="alert('Form values:\\n' + 
+                                'Name: ' + document.getElementById('customer-name').value + '\\n' +
+                                'Email: ' + document.getElementById('customer-email').value + '\\n' +
+                                'Phone: ' + document.getElementById('customer-phone').value + '\\n' +
+                                'Period: ' + document.getElementById('rental-period').value + '\\n' +
+                                'Start: ' + document.getElementById('start-date').value + '\\n' +
+                                'End: ' + document.getElementById('end-date').value
+                            )" style="background: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin-left: 10px;">
+                                📋 Show Form Data
+                            </button>
+                        </div>
+
                         <div class="payment-links">
                             <div class="payment-link-item">
                                 <div class="bike-option">
